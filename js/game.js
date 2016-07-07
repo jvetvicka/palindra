@@ -6,13 +6,12 @@ var game = {
     data : {
         // score
         score: 0,
-        Health: 0
+        Playerhealth: 0,
     },
 
 
     // Run on page load.
     "onload": function () {
-        me.game.HASH.debug = true;
         // Initialize the video.
         if (!me.video.init(960, 640, {wrapper : "screen", scale : "auto"})) {
             alert("Your browser does not support HTML5 canvas.");
