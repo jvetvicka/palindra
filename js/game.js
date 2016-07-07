@@ -7,6 +7,7 @@ var game = {
         // score
         score: 0,
         Playerhealth: 0,
+        Playerjumppower: 0, 
     },
 
 

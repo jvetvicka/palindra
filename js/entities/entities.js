@@ -53,6 +53,7 @@ game.PlayerEntity = me.Entity.extend({
         }
         else {
             this.body.vel.x = 0;
+            this.body.maxVel.y += game.data.Playerjumppower;
             // change to the standing animation
             this.renderable.setCurrentAnimation("stand");
         }
