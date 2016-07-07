@@ -21,8 +21,8 @@ game.HUD.Container = me.Container.extend({
         this.name = "HUD";
 
         // add our child score object at the right-bottom position
-        this.addChild(new game.HUD.ScoreItem(930, 600));
-        this.addChild(new game.HUD.HelthItem(30, 40));
+        this.addChild(new game.HUD.ScoreItem(1014, 10));
+        this.addChild(new game.HUD.HelthItem(10, 10));
     }
 
 });
@@ -66,7 +66,7 @@ game.HUD.ScoreItem = me.Renderable.extend({
      * draw the score
      */
     draw: function (renderer) {
-        this.texttorender = "SCORE:" + game.data.score;
+        this.texttorender = "" + game.data.score;
         this.font.draw(renderer,this.texttorender, this.pos.x, this.pos.y);
     }
 });
@@ -110,7 +110,7 @@ game.HUD.HelthItem = me.Renderable.extend({
      * draw the score
      */
     draw: function (renderer) {
-        this.texttorender = "HEALTH:" + game.data.Playerhealth;
+        this.texttorender = "" + game.data.Playerhealth;
         this.font.draw(renderer, this.texttorender, this.pos.x, this.pos.y);
     }
 });
