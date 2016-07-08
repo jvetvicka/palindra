@@ -261,7 +261,7 @@ game.EnemyFly = me.Entity.extend(
 
         // adjust the size setting information to match the sprite size
         // so that the entity object is created with the right size
-        settings.framewidth = settings.width = 80;
+        settings.framewidth = settings.width = 58;
         settings.frameheight = settings.height = 40;
 
         // redefine the default shape (used to define path) with a shape matching the renderable
