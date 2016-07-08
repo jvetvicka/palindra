@@ -10,7 +10,7 @@ game.PlayScreen = me.ScreenObject.extend({
         // reset the score
         game.data.score = 0;
         game.data.Playerhealth = 100;
-        game.data.Playerjumppower = 20;
+        game.data.Playerjumppower = 20.8;
 
         // Add our HUD to the game world, add it last so that this is on top of the rest.
         // Can also be forced by specifying a "Infinity" z value to the addChild function.
