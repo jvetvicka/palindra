@@ -280,7 +280,7 @@ game.EnemyFly = me.Entity.extend(
         this.walkLeft = false;
 
         // walking & jumping speed
-        this.body.setVelocity(1, 6);
+        this.body.setVelocity(2, 0);
     },
 
     // manage the enemy movement
