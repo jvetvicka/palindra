@@ -53,11 +53,11 @@ game.PlayerEntity = me.Entity.extend({
         }
         else {
             this.body.vel.x = 0;
-            this.body.maxVel.y += game.data.Playerjumppower;
             // change to the standing animation
             this.renderable.setCurrentAnimation("stand");
         }
         if (me.input.isKeyPressed('jump')) {
+            this.body.maxVel.y = game.data.Playerjumppower;
             if (!this.body.jumping && !this.body.falling) {
                 // set current vel to the maximum defined value
                 // gravity will then do the rest
