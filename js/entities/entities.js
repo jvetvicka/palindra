@@ -249,7 +249,7 @@ game.EnemyMouse = me.Entity.extend(
 /**
  * Enemy Fly
  */
-game.EnemyMouse = me.Entity.extend(
+game.EnemyFly = me.Entity.extend(
 {
     init: function (x, y, settings) {
         // define this here instead of tiled
