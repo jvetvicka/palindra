@@ -108,6 +108,17 @@ game.PlayerEntity = me.Entity.extend({
             case me.collision.types.ENEMY_OBJECT:
                 if ((response.overlapV.y > 0) && !this.body.jumping) {
                     // bounce (force jump)
+                    console.log(other);
+
+                    if (other.name == "EnemyFly") {
+                        // give some score
+                        game.data.score += 1000;
+                        // make sure it cannot be collected "again"
+                        this.collidable = false;
+                        // remove it
+                        me.game.world.removeChild(other);
+                    }
+
                     this.body.falling = false;
                     this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
                     // set the jumping flag
