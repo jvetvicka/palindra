@@ -26,10 +26,10 @@
   </data>
  </layer>
  <objectgroup name="MainCharacter">
-  <object id="1" name="mainPlayer" x="280" y="392" width="72" height="97">
+  <object id="1" name="mainPlayer" x="280" y="400" width="67" height="90">
    <properties>
-    <property name="frameheight" value="97"/>
-    <property name="framewidth" value="72"/>
+    <property name="frameheight" value="90"/>
+    <property name="framewidth" value="67"/>
     <property name="image" value="player_walk"/>
    </properties>
   </object>
