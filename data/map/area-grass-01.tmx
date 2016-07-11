@@ -69,14 +69,12 @@
   <object id="94" x="7210" y="138" width="278" height="42"/>
   <object id="95" x="7282" y="490" width="1470" height="140"/>
   <object id="96" x="6580" y="280" width="209" height="41"/>
-  <object id="100" name="Water" x="5390" y="560" width="280" height="70"/>
   <object id="102" x="5810" y="280" width="70" height="70"/>
   <object id="103" x="5950" y="279" width="71" height="72"/>
   <object id="104" x="6089" y="278" width="69" height="72"/>
   <object id="107" x="7979" y="-71">
    <polyline points="0,0 -207,210 -206,420 -140,421 -68,348 71,351 139,416 211,350 280,284 351,349 422,349 492,282 630,418 769,420 772,208 558,5"/>
   </object>
-  <object id="117" name="Water" x="70" y="560" width="140" height="68"/>
  </objectgroup>
  <objectgroup name="Coins">
   <object id="29" name="CoinEntity" x="2049" y="91" width="32" height="32">
