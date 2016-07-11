@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="125" height="9" tilewidth="70" tileheight="70" nextobjectid="119">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="125" height="9" tilewidth="70" tileheight="70" nextobjectid="121">
  <tileset firstgid="1" name="basic" tilewidth="70" tileheight="70" tilecount="161" columns="7">
   <image source="../img/map/basic.png" width="490" height="1610"/>
  </tileset>
@@ -75,6 +75,7 @@
   <object id="107" x="7979" y="-71">
    <polyline points="-207,73 -207,210 -206,420 -140,421 -68,348 71,351 139,416 211,350 280,284 351,349 422,349 492,282 630,418 769,420 772,208 773,79"/>
   </object>
+  <object id="119" type="past" x="69" y="800" width="139" height="37"/>
  </objectgroup>
  <objectgroup name="Coins">
   <object id="29" name="CoinEntity" x="2049" y="91" width="32" height="32">

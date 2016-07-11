@@ -74,7 +74,6 @@ game.PlayerEntity = me.Entity.extend({
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
 
-        console.log(me.game);
 
 
         // handle collisions against other shapes
@@ -88,6 +87,7 @@ game.PlayerEntity = me.Entity.extend({
      * colision handler
      */
     onCollision: function (response, other) {
+        console.log(other.type);
         switch (response.b.body.collisionType) {
             case me.collision.types.WORLD_SHAPE:
                 // Simulate a platform object
@@ -106,6 +106,11 @@ game.PlayerEntity = me.Entity.extend({
                     }
                     // Do not respond to the platform (pass through)
                     return false;
+                }
+
+                if (other.type === "past") {
+                    game.data.Playerhealth = 0;
+                    me.game.reset();
                 }
                 break;
 
