@@ -109,6 +109,16 @@ game.PlayerEntity = me.Entity.extend({
                 if ((response.overlapV.y > 0) && !this.body.jumping) {
                     // bounce (force jump)
                     console.log(other);
+
+                    if (other.name == "EnemyFly") {
+                        // give some score
+                        game.data.score += 1000;
+                        // make sure it cannot be collected "again"
+                        this.collidable = false;
+                        // remove it
+                        me.game.world.removeChild(other);
+                    }
+
                     this.body.falling = false;
                     this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
                     // set the jumping flag
@@ -119,16 +129,7 @@ game.PlayerEntity = me.Entity.extend({
                 }
                 else {
                     // let's flicker in case we touched an enemy
-                    this.renderable.flicker(750);
-
-                    if (other.name == "EnemyFly") {
-                        // give some score
-                        game.data.score += 1000;
-                        // make sure it cannot be collected "again"
-                        this.collidable = false;
-                        // remove it
-                        me.game.world.removeChild(other);
-                    }
+                   // this.renderable.flicker(750);
                 }
                 return false;
                 break;
@@ -329,7 +330,14 @@ game.EnemyFly = me.Entity.extend(
             // res.y >0 means touched by something on the bottom
             // which mean at top position for this one
             if (this.alive && (response.overlapV.y > 0) && response.a.body.falling) {
-                this.renderable.flicker(750);
+                other.renderable.flicker(750);
+                if (game.data.Playerhealth >= 10) {
+                    game.data.Playerhealth -= 10;
+                } else {
+                    other.alive = false;
+                    // remove it
+                    me.game.world.removeChild(other);
+                }
             }
             return false;
         }
