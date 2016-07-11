@@ -14,6 +14,7 @@ game.PlayerEntity = me.Entity.extend({
 
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+        me.game.viewport.setDeadzone(50, 150);
 
         // ensure the player is updated even when outside of the viewport
         this.alwaysUpdate = true;
@@ -72,6 +73,9 @@ game.PlayerEntity = me.Entity.extend({
 
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
+
+        console.log(me.game);
+
 
         // handle collisions against other shapes
         me.collision.check(this);
@@ -178,11 +182,11 @@ game.CoinEntity = me.CollectableEntity.extend({
 /**
  * Enemy Mouse
  */
-game.EnemyMouse = me.Entity.extend(
+game.EnemyFrog = me.Entity.extend(
 {
     init: function (x, y, settings) {
         // define this here instead of tiled
-        settings.image = "mouse";
+        settings.image = "frog";
 
         // save the area size defined in Tiled
         var width = settings.width;
@@ -190,8 +194,8 @@ game.EnemyMouse = me.Entity.extend(
 
         // adjust the size setting information to match the sprite size
         // so that the entity object is created with the right size
-        settings.framewidth = settings.width = 80;
-        settings.frameheight = settings.height = 40;
+        settings.framewidth = settings.width = 55;
+        settings.frameheight = settings.height = 50;
 
         // redefine the default shape (used to define path) with a shape matching the renderable
         settings.shapes[0] = new me.Rect(0, 0, settings.framewidth, settings.frameheight);
@@ -334,9 +338,10 @@ game.EnemyFly = me.Entity.extend(
                 if (game.data.Playerhealth >= 10) {
                     game.data.Playerhealth -= 10;
                 } else {
-                    other.alive = false;
+                    
+                    me.game.reset();
                     // remove it
-                    me.game.world.removeChild(other);
+                    //me.game.world.removeChild(other);
                 }
             }
             return false;
