@@ -110,7 +110,9 @@ game.PlayerEntity = me.Entity.extend({
 
                 if (other.type === "past") {
                     game.data.Playerhealth = 0;
-                    me.game.reset();
+                    me.state.change(me.state.LOADING);
+                    me.levelDirector.reloadLevel();
+                    me.state.change(me.state.PLAY);
                 }
                 break;
 
