@@ -109,10 +109,9 @@ game.PlayerEntity = me.Entity.extend({
                 }
 
                 if (other.type === "past") {
-                    game.data.Playerhealth = 0;
-                    me.state.change(me.state.LOADING);
-                    me.levelDirector.reloadLevel();
-                    me.state.change(me.state.PLAY);
+                    // remove it
+                    me.game.world.removeChild(this);
+                    game.levelrest();
                 }
                 break;
 
@@ -124,6 +123,15 @@ game.PlayerEntity = me.Entity.extend({
                     if (other.name == "EnemyFly") {
                         // give some score
                         game.data.score += 1000;
+                        // make sure it cannot be collected "again"
+                        this.collidable = false;
+                        // remove it
+                        me.game.world.removeChild(other);
+                    }
+
+                    if (other.name == "EnemyFrog") {
+                        // give some score
+                        game.data.score += 1200;
                         // make sure it cannot be collected "again"
                         this.collidable = false;
                         // remove it
@@ -187,7 +195,7 @@ game.CoinEntity = me.CollectableEntity.extend({
 });
 
 /**
- * Enemy Mouse
+ * Enemy EnemyFrog
  */
 game.EnemyFrog = me.Entity.extend(
 {
@@ -260,6 +268,16 @@ game.EnemyFrog = me.Entity.extend(
             // which mean at top position for this one
             if (this.alive && (response.overlapV.y > 0) && response.a.body.falling) {
                 this.renderable.flicker(750);
+                //player dieing
+                if (game.data.Playerhealth >= 15) {
+                    game.data.Playerhealth -= 15;
+                } else {
+                    //player die
+                    game.data.Playerhealth = 0;
+                    // remove it
+                    me.game.world.removeChild(other);
+                    game.levelrest()
+                }
             }
             return false;
         }
@@ -342,13 +360,14 @@ game.EnemyFly = me.Entity.extend(
             // which mean at top position for this one
             if (this.alive && (response.overlapV.y > 0) && response.a.body.falling) {
                 other.renderable.flicker(750);
+                //player dieing
                 if (game.data.Playerhealth >= 10) {
                     game.data.Playerhealth -= 10;
                 } else {
-                    
-                    me.game.reset();
+                    //player die
                     // remove it
-                    //me.game.world.removeChild(other);
+                    me.game.world.removeChild(other);
+                    game.levelrest()
                 }
             }
             return false;

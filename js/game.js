@@ -53,6 +53,18 @@ var game = {
 
         // Start the game.
         me.state.change(me.state.PLAY);
+    },
+
+    "levelrest": function () {
+        me.levelDirector.reloadLevel();
+        this.data.score = 0;
+        this.data.Playerhealth = 100;
+        this.loaded();
+
+    },
+
+    "onRestart": function () {
+
     }
 
 };
