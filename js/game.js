@@ -44,6 +44,7 @@ var game = {
         me.pool.register("CoinEntity", game.CoinEntity);
         me.pool.register("EnemyFrog", game.EnemyFrog);
         me.pool.register("EnemyFly", game.EnemyFly);
+        me.pool.register("Gun", game.GunEntity);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, "left");
@@ -66,5 +67,6 @@ var game = {
     "onRestart": function () {
 
     }
+
 
 };
