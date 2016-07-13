@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="125" height="15" tilewidth="70" tileheight="70" nextobjectid="25">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="125" height="15" tilewidth="70" tileheight="70" nextobjectid="29">
  <tileset firstgid="1" name="grass" tilewidth="70" tileheight="70" tilecount="49" columns="7">
   <image source="../img/map/grass.png" width="512" height="512"/>
  </tileset>
@@ -27,10 +27,7 @@
   <object id="9" x="1192" y="213">
    <polyline points="0,0 138,137 348,-74 348,-212"/>
   </object>
-  <object id="10" x="1471.33" y="513">
-   <polyline points="0,0 244.667,-233 211,135"/>
-  </object>
-  <object id="11" x="1716" y="280" width="774" height="350"/>
+  <object id="11" x="1680" y="280" width="810" height="350"/>
   <object id="12" x="1542" y="-1" width="1116" height="138"/>
   <object id="14" x="2730" y="490" width="1890" height="140"/>
   <object id="17" x="2870" y="0" width="980" height="350"/>
@@ -41,6 +38,9 @@
    <polyline points="0,0 210,212"/>
   </object>
   <object id="23" x="0" y="980" width="840" height="70"/>
+  <object id="27" type="slope" x="1470" y="490">
+   <polygon points="0,0 0,140 210,140 210,-210"/>
+  </object>
  </objectgroup>
  <objectgroup name="MainCharacter">
   <object id="24" name="mainPlayer" x="70" y="400" width="67" height="90">
