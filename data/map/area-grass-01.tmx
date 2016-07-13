@@ -280,10 +280,10 @@
   </object>
  </objectgroup>
  <objectgroup name="Gun">
-  <object id="128" x="1067.5" y="367.5" width="30" height="30">
+  <object id="128" name="GunEntity" x="1067.5" y="367.5" width="30" height="30">
    <properties>
     <property name="framewidth" value="30"/>
-    <property name="name" value="gun"/>
+    <property name="image" value="gun"/>
    </properties>
   </object>
  </objectgroup>
