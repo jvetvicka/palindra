@@ -71,6 +71,14 @@ game.PlayerEntity = me.Entity.extend({
             }
         }
 
+
+        if (game.data.Usegun == true) {
+            if (me.input.isKeyPressed('fire')) {
+                me.pool.register("GunLaser", game.GunLaser);
+                me.audio.play("laser");
+            }
+        }
+
         // apply physics to the body (this moves the entity)
         this.body.update(dt);
 
@@ -118,7 +126,6 @@ game.PlayerEntity = me.Entity.extend({
             case me.collision.types.ENEMY_OBJECT:
                 if ((response.overlapV.y > 0) && !this.body.jumping) {
                     // bounce (force jump)
-                    console.log(other);
 
                     if (other.name == "EnemyFly") {
                         // give some score
@@ -397,11 +404,53 @@ game.GunEntity = me.CollectableEntity.extend({
 
         game.data.Usegun = true;
 
+        console.log(game.data.Usegun);
+
+
         //avoid further collision and delete it
         this.body.setCollisionMask(me.collision.types.NO_OBJECT);
 
         me.game.world.removeChild(this);
 
         return false;
+    }
+});
+
+/**
+ * Laser for player gun
+ */
+game.GunLaser = me.Entity.extend({
+
+    init: function (x, y, settings) {
+        // define this here instead of tiled
+        settings.image = "laser";
+        settings.name = "GunLaser";
+
+        // save the area size defined in Tiled
+        var width = settings.width;
+        var height = settings.height;
+
+        // adjust the size setting information to match the sprite size
+        // so that the entity object is created with the right size
+        settings.framewidth = settings.width = 58;
+        settings.frameheight = settings.height = 40;
+
+        // redefine the default shape (used to define path) with a shape matching the renderable
+        settings.shapes[0] = new me.Rect(0, 0, settings.framewidth, settings.frameheight);
+
+        // call the parent constructor
+        this._super(me.Entity, 'init', [x, y, settings]);
+
+        // set start/end position based on the initial area size
+        x = PlayerEntity.pos.x;
+        this.startX = x;
+        this.endX = x + width - settings.framewidth;
+        this.pos.x = x + width - settings.framewidth;
+
+        // to remember which side we were walking
+        this.walkLeft = false;
+
+        // walking & jumping speed
+        this.body.setVelocity(1, 0);
     }
 });
