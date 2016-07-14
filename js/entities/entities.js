@@ -74,7 +74,8 @@ game.PlayerEntity = me.Entity.extend({
 
         if (game.data.Usegun == true) {
             if (me.input.isKeyPressed('fire')) {
-                me.pool.register("GunLaser", game.GunLaser);
+                // when we need to manually create a new bullet:
+                me.game.world.addChild(me.pool.pull("laser", this.pos.x - game.Laser.width, this.pos.y - game.Laser.height));
                 me.audio.play("laser");
             }
         }
@@ -419,38 +420,41 @@ game.GunEntity = me.CollectableEntity.extend({
 /**
  * Laser for player gun
  */
-game.GunLaser = me.Entity.extend({
 
-    init: function (x, y, settings) {
-        // define this here instead of tiled
-        settings.image = "laser";
-        settings.name = "GunLaser";
+game.Laser = me.Entity.extend({
+    init : function (x, y) {
+        this._super(me.Entity, "init", [x, y, { width: game.Laser.width, height: game.Laser.height }]);
+        this.z = 5;
+        this.body.setVelocity(0, 300);
+        this.body.collisionType = me.collision.types.PROJECTILE_OBJECT;
+        this.renderable = new (me.Renderable.extend({
+            init : function () {
+                this._super(me.Renderable, "init", [0, 0, game.Laser.width, game.Laser.height]);
+            },
+            destroy : function () {},
+            draw : function (renderer) {
+                var color = renderer.globalColor.toHex();
+                renderer.setColor('#5EFF7E');
+                renderer.fillRect(0, 0, this.width, this.height);
+                renderer.setColor(color);
+            }
+        }));
+        this.alwaysUpdate = true;
+    },
 
-        // save the area size defined in Tiled
-        var width = settings.width;
-        var height = settings.height;
+    update : function (time) {
+        this.body.vel.y -= this.body.accel.y * time / 1000;
+        if (this.pos.y + this.height <= 0) {
+            me.game.world.removeChild(this);
+        }
 
-        // adjust the size setting information to match the sprite size
-        // so that the entity object is created with the right size
-        settings.framewidth = settings.width = 58;
-        settings.frameheight = settings.height = 40;
+        this.body.update();
+        me.collision.check(this);
 
-        // redefine the default shape (used to define path) with a shape matching the renderable
-        settings.shapes[0] = new me.Rect(0, 0, settings.framewidth, settings.frameheight);
-
-        // call the parent constructor
-        this._super(me.Entity, 'init', [x, y, settings]);
-
-        // set start/end position based on the initial area size
-        x = PlayerEntity.pos.x;
-        this.startX = x;
-        this.endX = x + width - settings.framewidth;
-        this.pos.x = x + width - settings.framewidth;
-
-        // to remember which side we were walking
-        this.walkLeft = false;
-
-        // walking & jumping speed
-        this.body.setVelocity(1, 0);
+        return true;
     }
 });
+
+game.Laser.width = 5;
+game.Laser.height = 28;
+
