@@ -395,7 +395,7 @@ game.GunEntity = me.CollectableEntity.extend({
         // play a "coin collected" sound
         me.audio.play("cling");
 
-
+        game.data.Usegun = true;
 
         //avoid further collision and delete it
         this.body.setCollisionMask(me.collision.types.NO_OBJECT);
