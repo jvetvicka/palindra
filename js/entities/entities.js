@@ -75,7 +75,7 @@ game.PlayerEntity = me.Entity.extend({
         if (game.data.Usegun == true) {
             if (me.input.isKeyPressed('fire')) {
                 // when we need to manually create a new bullet:
-                me.game.world.addChild(me.pool.pull("laser", this.pos.x - game.Laser.width, this.pos.x - game.Laser.width));
+                me.game.world.addChild(me.pool.pull("laser", this.pos.x, this.pos.y - game.Laser.width));
                 me.audio.play("laser");
             }
         }
@@ -425,7 +425,7 @@ game.Laser = me.Entity.extend({
     init : function (x, y) {
         this._super(me.Entity, "init", [x, y, { width: game.Laser.width, height: game.Laser.height }]);
         this.z = 5;
-        this.body.setVelocity(0, 300);
+        this.body.setVelocity(0, 10);
         this.body.collisionType = me.collision.types.PROJECTILE_OBJECT;
         this.renderable = new (me.Renderable.extend({
             init : function () {
@@ -455,6 +455,6 @@ game.Laser = me.Entity.extend({
     }
 });
 
-game.Laser.width = 28;
-game.Laser.height = 5;
+game.Laser.width = 5;
+game.Laser.height = 28;
 
