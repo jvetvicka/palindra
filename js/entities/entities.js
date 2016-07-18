@@ -443,6 +443,7 @@ game.Laser = me.Entity.extend({
     },
 
     update : function (time) {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
         this.body.vel.x += this.body.accel.x * time / 1000;
         if (this.pos.x + this.width <= 0) {
@@ -451,6 +452,10 @@ game.Laser = me.Entity.extend({
         this.body.vel.y -= this.body.accel.y * time / 1000;
         if (this.pos.y + this.height <= 0) {
 >>>>>>> Stashed changes
+=======
+        this.body.vel.y -= this.body.accel.y * time / 1000;
+        if (this.pos.y + this.height <= 0) {
+>>>>>>> parent of 65688fc... Střelba  horyzontalně doprava
             me.game.world.removeChild(this);
         }
 
@@ -461,6 +466,6 @@ game.Laser = me.Entity.extend({
     }
 });
 
-game.Laser.width = 28;
-game.Laser.height = 5;
+game.Laser.width = 5;
+game.Laser.height = 28;
 
