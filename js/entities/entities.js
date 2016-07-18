@@ -35,6 +35,7 @@ game.PlayerEntity = me.Entity.extend({
         if (me.input.isKeyPressed('left')) {
             // flip the sprite on horizontal axis
             this.renderable.flipX(true);
+            game.Laser.flipX = true;
             // update the entity velocity
             this.body.vel.x -= this.body.accel.x * me.timer.tick;
             // change to the walking animation
@@ -45,6 +46,7 @@ game.PlayerEntity = me.Entity.extend({
         else if (me.input.isKeyPressed('right')) {
             // unflip the sprite
             this.renderable.flipX(false);
+            game.Laser.flipX = false;
             // update the entity velocity
             this.body.vel.x += this.body.accel.x * me.timer.tick;
             // change to the walking animation
@@ -156,7 +158,7 @@ game.PlayerEntity = me.Entity.extend({
                 }
                 else {
                     // let's flicker in case we touched an enemy
-                   // this.renderable.flicker(750);
+                    // this.renderable.flicker(750);
                 }
                 return false;
                 break;
@@ -185,14 +187,14 @@ game.CoinEntity = me.CollectableEntity.extend({
      * colision handler
      */
     onCollision: function (response, other) {
-        
+
         // play a "coin collected" sound
         me.audio.play("cling");
 
 
         // give some score
         game.data.score += 250;
-        
+
         //avoid further collision and delete it
         this.body.setCollisionMask(me.collision.types.NO_OBJECT);
 
@@ -405,9 +407,6 @@ game.GunEntity = me.CollectableEntity.extend({
 
         game.data.Usegun = true;
 
-        console.log(game.data.Usegun);
-
-
         //avoid further collision and delete it
         this.body.setCollisionMask(me.collision.types.NO_OBJECT);
 
@@ -422,17 +421,24 @@ game.GunEntity = me.CollectableEntity.extend({
  */
 
 game.Laser = me.Entity.extend({
-    init : function (x, y) {
-        this._super(me.Entity, "init", [x, y, { width: game.Laser.width, height: game.Laser.height }]);
+    init: function (x, y) {
+        this._super(me.Entity, "init", [x, y, { width: game.Laser.width, height: game.Laser.height, flipX: game.Laser.flipX }]);
         this.z = 5;
-        this.body.setVelocity(300, 0);
+        console.log(game.Laser.flipX);
+
+        if (game.Laser.flipX == true) {
+            this.body.setVelocity(300, 0);
+        } else {
+            this.body.setVelocity(-300, 0);
+        }
+
         this.body.collisionType = me.collision.types.PROJECTILE_OBJECT;
         this.renderable = new (me.Renderable.extend({
-            init : function () {
+            init: function () {
                 this._super(me.Renderable, "init", [0, 0, game.Laser.width, game.Laser.height]);
             },
-            destroy : function () {},
-            draw : function (renderer) {
+            destroy: function () { },
+            draw: function (renderer) {
                 var color = renderer.globalColor.toHex();
                 renderer.setColor('#5EFF7E');
                 renderer.fillRect(0, 0, this.width, this.height);
@@ -442,12 +448,19 @@ game.Laser = me.Entity.extend({
         this.alwaysUpdate = true;
     },
 
-    update : function (time) {
-        this.body.vel.x += this.body.accel.x * time / 1000;
-        if (this.pos.x + this.width <= 0) {
+    update: function (time) {
+        if (game.Laser.flipX == false) {
+            this.body.vel.x += this.body.accel.x * time / 1000;
+            if (this.pos.x + this.width <= 0) {
+                me.game.world.removeChild(this);
+            }
+        }
 
-
-            me.game.world.removeChild(this);
+        if (game.Laser.flipX == true) {
+            this.body.vel.x -= this.body.accel.x * time / 1000;
+            if (this.pos.x + this.width <= 0) {
+                me.game.world.removeChild(this);
+            }
         }
 
         this.body.update();
