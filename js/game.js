@@ -46,7 +46,8 @@ var game = {
         me.pool.register("EnemyFrog", game.EnemyFrog);
         me.pool.register("EnemyFly", game.EnemyFly);
         me.pool.register("GunEntity", game.GunEntity);
-        me.pool.register("laser", game.Laser);
+        me.pool.register("laser", game.Laser,true);
+        me.pool.register("NextLevel", game.NextLevel);
 
         // enable the keyboard
         me.input.bindKey(me.input.KEY.LEFT, "left");

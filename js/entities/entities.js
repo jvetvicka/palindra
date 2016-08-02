@@ -77,7 +77,7 @@ game.PlayerEntity = me.Entity.extend({
         if (game.data.Usegun == true) {
             if (me.input.isKeyPressed('fire')) {
                 // when we need to manually create a new bullet:
-                me.game.world.addChild(me.pool.pull("laser", this.pos.x, this.pos.y - game.Laser.width));
+                me.game.world.addChild(me.pool.pull("laser", this.pos.x + game.Laser.width +5, this.pos.y + this.body.height / 2));
                 me.audio.play("laser");
             }
         }
@@ -188,17 +188,19 @@ game.CoinEntity = me.CollectableEntity.extend({
      */
     onCollision: function (response, other) {
 
-        // play a "coin collected" sound
-        me.audio.play("cling");
+        if (other.name == "mainPlayer") {
+            // play a "coin collected" sound
+            me.audio.play("cling");
 
 
-        // give some score
-        game.data.score += 250;
+            // give some score
+            game.data.score += 250;
 
-        //avoid further collision and delete it
-        this.body.setCollisionMask(me.collision.types.NO_OBJECT);
+            //avoid further collision and delete it
+            this.body.setCollisionMask(me.collision.types.NO_OBJECT);
 
-        me.game.world.removeChild(this);
+            me.game.world.removeChild(this);
+        }
 
         return false;
     }
@@ -421,20 +423,21 @@ game.GunEntity = me.CollectableEntity.extend({
  */
 
 game.Laser = me.Entity.extend({
-    init: function (x, y) {
-        this._super(me.Entity, "init", [x, y, { width: game.Laser.width, height: game.Laser.height, flipX: game.Laser.flipX }]);
-        this.z = 5;
-        console.log(game.Laser.flipX);
-
-        if (game.Laser.flipX == true) {
-            this.body.setVelocity(300, 0);
+    init : function (x, y) {
+        this._super(me.Entity, "init", [x, y, { width: game.Laser.width, height: game.Laser.height}]);
+        this.z = 0;
+        this.shotpos = x;
+        this.flipX = game.Laser.flipX;
+        if (this.flipX == true) {
+            this.body.setVelocity(30, 0);
         } else {
-            this.body.setVelocity(-300, 0);
+            this.body.setVelocity(-30, 0);
         }
 
         this.body.collisionType = me.collision.types.PROJECTILE_OBJECT;
         this.renderable = new (me.Renderable.extend({
-            init: function () {
+
+            init : function () {
                 this._super(me.Renderable, "init", [0, 0, game.Laser.width, game.Laser.height]);
             },
             destroy: function () { },
@@ -443,33 +446,46 @@ game.Laser = me.Entity.extend({
                 renderer.setColor('#5EFF7E');
                 renderer.fillRect(0, 0, this.width, this.height);
                 renderer.setColor(color);
-            }
+            },
+
         }));
         this.alwaysUpdate = true;
     },
 
-    update: function (time) {
-        if (game.Laser.flipX == false) {
+    update : function (time) {
+        if (this.flipX == false) {
             this.body.vel.x += this.body.accel.x * time / 1000;
-            if (this.pos.x + this.width <= 0) {
+            console.log(this.pos.x - this.shotpos);
+            if (this.pos.x + this.width >= this.shotpos + game.Laser.dostrel) {
                 me.game.world.removeChild(this);
+                console.log("Terminated laser left");
             }
         }
 
-        if (game.Laser.flipX == true) {
+        if (this.flipX == true) {
             this.body.vel.x -= this.body.accel.x * time / 1000;
+            console.log(this.pos.x);
             if (this.pos.x + this.width <= 0) {
                 me.game.world.removeChild(this);
+                console.log("Terminated laser left");
             }
+
         }
 
         this.body.update();
         me.collision.check(this);
 
         return true;
+    },
+
+    onCollision: function (response, other) {
+        console.log(other);
     }
 });
 
 game.Laser.width = 28;
 game.Laser.height = 5;
+game.Laser.dostrel = 1000;
+
+
 
