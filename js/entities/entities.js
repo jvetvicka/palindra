@@ -456,7 +456,7 @@ game.Laser = me.Entity.extend({
         if (this.flipX == false) {
             this.body.vel.x += this.body.accel.x * time / 1000;
             console.log(this.pos.x - this.shotpos);
-            if (this.pos.x + this.width >= this.shotpos + game.Laser.dostrel) {
+            if (this.pos.x + this.width >= this.shotpos + Math.acos(game.Laser.dostrel)) {
                 me.game.world.removeChild(this);
                 console.log("Terminated laser left");
             }
@@ -478,14 +478,36 @@ game.Laser = me.Entity.extend({
         return true;
     },
 
-    onCollision: function (response, other) {
+  /*  onCollision: function (response, other) {
         console.log(other);
-    }
+
+        return false;
+    }*/
 });
 
 game.Laser.width = 28;
 game.Laser.height = 5;
-game.Laser.dostrel = 1000;
+game.Laser.dostrel = 3000;
 
 
 
+/**
+ * Gun Entity
+ */
+game.NextLevel = me.LevelEntity.extend({
+
+    init: function (x,y,settings){
+        //call the debugger here and check that settings has the things that you want or...
+        var someSetting = settings.customSetting
+        this._super(me.LevelEntity, 'init', [x,y,settings]);
+        this.customSetting = someSetting;
+    },
+
+    /*onCollision: function (response, other) {
+        console.log(this);
+        console.log(other);
+
+        return true;
+    }*/
+
+});
