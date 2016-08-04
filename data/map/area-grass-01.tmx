@@ -82,7 +82,7 @@
   </object>
   <object id="123" type="past" x="70" y="752.5" width="8670" height="10"/>
   <object id="127" type="past" x="5390" y="560" width="280" height="70"/>
-  <object id="121" name="me.LevelEntity" type="portal" x="1610" y="365" width="70" height="123">
+  <object id="121" name="me.LevelEntity" x="1610" y="365" width="70" height="123">
    <properties>
     <property name="duration" value="250"/>
     <property name="fade" value="#000000"/>
