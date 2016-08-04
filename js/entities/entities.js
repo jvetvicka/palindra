@@ -9,8 +9,11 @@ game.PlayerEntity = me.Entity.extend({
         // call the constructor
         this._super(me.Entity, 'init', [x, y, settings]);
 
+        this.body.collisionType = me.collision.types.PLAYER_OBJECT;
+
         // set the default horizontal & vertical speed (accel vector)
         this.body.setVelocity(3, 15);
+        
 
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
@@ -77,8 +80,10 @@ game.PlayerEntity = me.Entity.extend({
         if (game.data.Usegun == true) {
             if (me.input.isKeyPressed('fire')) {
                 // when we need to manually create a new bullet:
-                me.game.world.addChild(me.pool.pull("laser", this.pos.x + game.Laser.width +5, this.pos.y + this.body.height / 2));
-                me.audio.play("laser");
+               objlaser = new game.Laser(this.pos.x + game.Laser.width, this.pos.y + this.body.height / 2);
+               me.game.world.addChild(objlaser);
+               me.audio.play("laser");
+
             }
         }
 
@@ -98,7 +103,6 @@ game.PlayerEntity = me.Entity.extend({
      * colision handler
      */
     onCollision: function (response, other) {
-        console.log(other.type);
         switch (response.b.body.collisionType) {
             case me.collision.types.WORLD_SHAPE:
                 // Simulate a platform object
@@ -275,20 +279,25 @@ game.EnemyFrog = me.Entity.extend(
      * (called when colliding with other objects)
      */
     onCollision: function (response, other) {
+
         if (response.b.body.collisionType !== me.collision.types.WORLD_SHAPE) {
             // res.y >0 means touched by something on the bottom
             // which mean at top position for this one
-            if (this.alive && (response.overlapV.y > 0) && response.a.body.falling) {
-                this.renderable.flicker(750);
+            console.log(other.body.collisionType);
+            if (this.alive && (response.overlapV.x > 0) /*&& response.a.body.falling*/) {
+                other.renderable.flicker(750);
+                console.log(other.renderable);
                 //player dieing
-                if (game.data.Playerhealth >= 15) {
-                    game.data.Playerhealth -= 15;
-                } else {
-                    //player die
-                    game.data.Playerhealth = 0;
-                    // remove it
-                    me.game.world.removeChild(other);
-                    game.levelrest()
+                if (other.name = "mainPlayer" && other.renderable.flickering == true) {
+                    if (game.data.Playerhealth >= 1) {
+                        game.data.Playerhealth -= 1;
+                        return false;
+                    } else {
+                        //player die
+                        // remove it
+                        me.game.world.removeChild(other);
+                        game.levelrest()
+                    }
                 }
             }
             return false;
@@ -373,13 +382,17 @@ game.EnemyFly = me.Entity.extend(
             if (this.alive && (response.overlapV.y > 0) && response.a.body.falling) {
                 other.renderable.flicker(750);
                 //player dieing
-                if (game.data.Playerhealth >= 10) {
-                    game.data.Playerhealth -= 10;
-                } else {
-                    //player die
-                    // remove it
-                    me.game.world.removeChild(other);
-                    game.levelrest()
+                if (other.name = "mainPlayer") {
+                    if (game.data.Playerhealth >= 5) {
+                        game.data.Playerhealth -= 5;
+                    } else {
+                        //player die
+                        game.data.Playerhealth = 0;
+                        // remove it
+                        me.game.world.removeChild(other);
+                        console.log(other.name);
+                        game.levelrest()
+                    }
                 }
             }
             return false;
@@ -425,14 +438,11 @@ game.GunEntity = me.CollectableEntity.extend({
 game.Laser = me.Entity.extend({
     init : function (x, y) {
         this._super(me.Entity, "init", [x, y, { width: game.Laser.width, height: game.Laser.height}]);
-        this.z = 0;
+        this.z = 5;
         this.shotpos = x;
         this.flipX = game.Laser.flipX;
-        if (this.flipX == true) {
-            this.body.setVelocity(30, 0);
-        } else {
-            this.body.setVelocity(-30, 0);
-        }
+        this.body.setVelocity(150, 0);
+        
 
         this.body.collisionType = me.collision.types.PROJECTILE_OBJECT;
         this.renderable = new (me.Renderable.extend({
@@ -455,21 +465,20 @@ game.Laser = me.Entity.extend({
     update : function (time) {
         if (this.flipX == false) {
             this.body.vel.x += this.body.accel.x * time / 1000;
-            console.log(this.pos.x - this.shotpos);
-            if (this.pos.x + this.width >= this.shotpos + Math.acos(game.Laser.dostrel)) {
+            if (this.pos.x + this.width >= this.shotpos + game.Laser.dostrel) {
+                this.renderable = null;
                 me.game.world.removeChild(this);
-                console.log("Terminated laser left");
+                console.log("Terminated laser right");
             }
         }
 
         if (this.flipX == true) {
             this.body.vel.x -= this.body.accel.x * time / 1000;
-            console.log(this.pos.x);
-            if (this.pos.x + this.width <= 0) {
+            if (this.pos.x - this.width <= this.shotpos - game.Laser.dostrel) {
+                this.renderable = null;
                 me.game.world.removeChild(this);
                 console.log("Terminated laser left");
             }
-
         }
 
         this.body.update();
@@ -487,7 +496,7 @@ game.Laser = me.Entity.extend({
 
 game.Laser.width = 28;
 game.Laser.height = 5;
-game.Laser.dostrel = 3000;
+game.Laser.dostrel = 800;
 
 
 
@@ -503,11 +512,12 @@ game.NextLevel = me.LevelEntity.extend({
         this.customSetting = someSetting;
     },
 
-    /*onCollision: function (response, other) {
-        console.log(this);
-        console.log(other);
+    onCollision: function (response, other) {
+     
+        if (other.name = "mainPlayer") {
 
-        return true;
-    }*/
+            return true;
+        }
+    }
 
 });
