@@ -283,12 +283,12 @@ game.EnemyFrog = me.Entity.extend(
         if (response.b.body.collisionType !== me.collision.types.WORLD_SHAPE) {
             // res.y >0 means touched by something on the bottom
             // which mean at top position for this one
-            if (this.alive && (response.overlapV.x > 0) /*&& response.a.body.falling*/) {
+            if (this.alive && (response.overlapV.x > 0) && response.a.body.falling) {
                 other.renderable.flicker(750);
                 //player dieing
-                if (other.name = "mainPlayer" && other.renderable.flickering == true) {
-                    if (game.data.Playerhealth >= 1) {
-                        game.data.Playerhealth -= 1;
+                if (other.name = "mainPlayer") {
+                    if (game.data.Playerhealth >= 5) {
+                        game.data.Playerhealth -= 5;
                         return false;
                     } else {
                         //player die
@@ -485,11 +485,11 @@ game.Laser = me.Entity.extend({
         return true;
     },
 
-  /*  onCollision: function (response, other) {
+    onCollision: function (response, other) {
         console.log(other);
 
         return false;
-    }*/
+    }
 });
 
 game.Laser.width = 28;
