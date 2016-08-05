@@ -486,7 +486,11 @@ game.Laser = me.Entity.extend({
     },
 
     onCollision: function (response, other) {
-        console.log(other);
+
+        if (response.b.name == "levelEntity") {
+           
+            console.log("mmmm");
+        }
 
         return false;
     }
@@ -508,7 +512,7 @@ game.NextLevel = me.LevelEntity.extend({
         var someSetting = settings.customSetting
         this._super(me.LevelEntity, 'init', [x,y,settings]);
         this.customSetting = someSetting;
-
+        this.body.setCollisionMask(me.collision.types.PLAYER_OBJECT);
     },
 
 });
