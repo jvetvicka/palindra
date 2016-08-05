@@ -283,10 +283,8 @@ game.EnemyFrog = me.Entity.extend(
         if (response.b.body.collisionType !== me.collision.types.WORLD_SHAPE) {
             // res.y >0 means touched by something on the bottom
             // which mean at top position for this one
-            console.log(other.body.collisionType);
             if (this.alive && (response.overlapV.x > 0) /*&& response.a.body.falling*/) {
                 other.renderable.flicker(750);
-                console.log(other.renderable);
                 //player dieing
                 if (other.name = "mainPlayer" && other.renderable.flickering == true) {
                     if (game.data.Playerhealth >= 1) {
@@ -510,14 +508,7 @@ game.NextLevel = me.LevelEntity.extend({
         var someSetting = settings.customSetting
         this._super(me.LevelEntity, 'init', [x,y,settings]);
         this.customSetting = someSetting;
+
     },
-
-    onCollision: function (response, other) {
-     
-        if (other.name = "mainPlayer") {
-
-            return true;
-        }
-    }
 
 });
