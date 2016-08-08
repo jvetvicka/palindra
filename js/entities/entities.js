@@ -284,9 +284,9 @@ game.EnemyFrog = me.Entity.extend(
             // res.y >0 means touched by something on the bottom
             // which mean at top position for this one
             if (this.alive && (response.overlapV.x > 0) && response.a.body.falling) {
-                other.renderable.flicker(750);
+                if (response.a.name == "mainPlayer") {
+                    response.a.renderable.flicker(750);
                 //player dieing
-                if (other.name = "mainPlayer") {
                     if (game.data.Playerhealth >= 5) {
                         game.data.Playerhealth -= 5;
                         return false;
@@ -378,9 +378,10 @@ game.EnemyFly = me.Entity.extend(
             // res.y >0 means touched by something on the bottom
             // which mean at top position for this one
             if (this.alive && (response.overlapV.y > 0) && response.a.body.falling) {
-                other.renderable.flicker(750);
+                console.log(other);
+                if (response.a.name == "mainPlayer") {
+                response.a.renderable.flicker(750);
                 //player dieing
-                if (other.name = "mainPlayer") {
                     if (game.data.Playerhealth >= 5) {
                         game.data.Playerhealth -= 5;
                     } else {
@@ -440,9 +441,9 @@ game.Laser = me.Entity.extend({
         this.shotpos = x;
         this.flipX = game.Laser.flipX;
         this.body.setVelocity(150, 0);
-        
 
         this.body.collisionType = me.collision.types.PROJECTILE_OBJECT;
+        this.body.setCollisionMask(me.collision.types.ENEMY_OBJECT);
         this.renderable = new (me.Renderable.extend({
 
             init : function () {
@@ -451,7 +452,7 @@ game.Laser = me.Entity.extend({
             destroy: function () { },
             draw: function (renderer) {
                 var color = renderer.globalColor.toHex();
-                renderer.setColor('#5EFF7E');
+                renderer.setColor('#6e6e86');
                 renderer.fillRect(0, 0, this.width, this.height);
                 renderer.setColor(color);
             },
@@ -466,7 +467,6 @@ game.Laser = me.Entity.extend({
             if (this.pos.x + this.width >= this.shotpos + game.Laser.dostrel) {
                 this.renderable = null;
                 me.game.world.removeChild(this);
-                console.log("Terminated laser right");
             }
         }
 
@@ -475,7 +475,6 @@ game.Laser = me.Entity.extend({
             if (this.pos.x - this.width <= this.shotpos - game.Laser.dostrel) {
                 this.renderable = null;
                 me.game.world.removeChild(this);
-                console.log("Terminated laser left");
             }
         }
 
@@ -486,10 +485,11 @@ game.Laser = me.Entity.extend({
     },
 
     onCollision: function (response, other) {
-
-        if (response.b.name == "levelEntity") {
-           
-            console.log("mmmm");
+        if (response.b.body.collisionType == me.collision.types.ENEMY_OBJECT) {
+            response.b.renderable.flicker(1000);
+            response.b.body.collisionType = me.collision.types.NO_OBJECT;
+            this.renderable = null;
+            me.game.world.removeChild(this);
         }
 
         return false;
